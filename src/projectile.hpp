@@ -12,7 +12,6 @@ class Projectile {
         Projectile(Vector2 playerPosition);
         ~Projectile();
 
-        //bool shoot();
         void update();
         void init();
         void shoot();

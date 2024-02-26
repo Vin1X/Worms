@@ -14,10 +14,8 @@ void Projectile::update() {
         position.x += velocity.x;
         position.y += velocity.y;
     
-        if (position.x >= GetScreenWidth() || position.x <= 0) {
-            active = false;
-        }
-        if (position.y >= GetScreenHeight() || position.y <= 0) {
+        if (position.x >= GetScreenWidth() || position.x <= 0 || 
+            position.y >= GetScreenHeight() || position.y <= 0) {
             active = false;
         }
     }
@@ -28,6 +26,7 @@ void Projectile::init() {
     if (active) DrawCircleV(position, projectileRadius, RED);
 }
 
+// Try to implement the shoot method here not in main.cpp
 void Projectile::shoot() {
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         init();

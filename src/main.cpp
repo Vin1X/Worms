@@ -29,7 +29,10 @@ int main() {
         player.move();
         player.takeAim();
         
-        projectile.shoot();
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            projectile.active = true;
+            projectile.position = {player.position.x + 10, player.position.y + 25};
+        }
         projectile.init();
         projectile.update();
 

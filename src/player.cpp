@@ -10,8 +10,8 @@ Player::Player(Vector2 startPos) {
 Player::~Player() {}
 
 Vector2 Player::move() {
-    if (IsKeyPressed(KEY_RIGHT)) position.x += 10;
-    else if (IsKeyPressed(KEY_LEFT)) position.x -= 10;
+    if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D)) position.x += 10;
+    else if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A)) position.x -= 10;
     return position;
 } 
 
@@ -34,3 +34,5 @@ void Player::takeAim() {
         LIGHTGRAY
     );
 }
+
+
