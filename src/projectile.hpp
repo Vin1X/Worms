@@ -9,11 +9,12 @@ class Projectile {
         float projectileRadius;
         bool active;
 
-        Projectile(Vector2 playerPosition);
+        Projectile();
         ~Projectile();
 
-        void update();
-        void init();
-        void shoot();
+        void Update();
+        void Init();
+        void Impact();
+        //void shoot();
     private:
 };

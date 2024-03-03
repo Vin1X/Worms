@@ -1,18 +1,15 @@
 #include "raylib.h"
+#include "map.hpp"
 
-class Map {
-private:
-    Rectangle rectangle;
-    Color color;
+Map::Map() {}
 
-public:
+Map::~Map() {}
 
-    void init() {
-        DrawRectangleRec(rectangle, color);
-    }
+void Map::Init() {
+    DrawRectangleRec(mapShape, color);
+    ClearBackground(RAYWHITE);
+}
 
-    Map(Rectangle rect, Color col) {
-        rectangle = rect;
-        color = col;
-    }
-};
+void Map::Explosion(Vector2 position) {
+    DrawCircle(position.x, position.y, 25, RAYWHITE);
+}

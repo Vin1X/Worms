@@ -1,31 +1,42 @@
 #include "raylib.h"
 #include "player.hpp"
 #include <iostream>
+#include <math.h>
+#include "map.hpp"
 
-Player::Player(Vector2 startPos) {
-    position = startPos;
-    health = 100;
+Player::Player() {
+    //image = LoadTexture("img/player.png");
 }
 
-Player::~Player() {}
+Player::~Player() {
+    //UnloadTexture(image);
+}
 
-Vector2 Player::move() {
+void Player::Init(int player) {
+    if (player == 1) position = {100, mapShape.y - 50};
+    else position = {1180, mapShape.y - 50};
+    //DrawTextureV(image, {200, 150}, WHITE);
+    DrawRectangleV(position, {15, 50}, BROWN);
+    DisplayHealth();
+    
+    if (playerTurn == true) {
+        //Move();
+        //TakeAim();
+    }
+}
+
+void Player::DisplayHealth() {
+    DrawText("Health: ", position.x - 40, position.y - 20, 20, BLACK);
+    DrawText(std::to_string(health).c_str(), position.x + 40, position.y - 20, 20, BLACK);
+}
+
+Vector2 Player::Move() {
     if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D)) position.x += 10;
     else if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A)) position.x -= 10;
     return position;
 } 
 
-void Player::init() {
-    DrawRectangleV(position, {15, 50}, BROWN);
-    displayHealth();
-}
-
-void Player::displayHealth() {
-    DrawText("Health: ", position.x - 40, position.y - 20, 20, BLACK);
-    DrawText(std::to_string(health).c_str(), position.x + 40, position.y - 20, 20, BLACK);
-}
-
-void Player::takeAim() {
+Vector2 Player::TakeAim() {
     aimingPoint = GetMousePosition();
     DrawTriangle(
         {position.x + 5, position.y + 20},
@@ -33,6 +44,21 @@ void Player::takeAim() {
         aimingPoint,
         LIGHTGRAY
     );
+
+    // Ki keine ahnung
+    Vector2 direction;
+    direction.x = GetMouseX() - position.x;
+    direction.y = GetMouseY() - position.y;
+    float distance = sqrtf(direction.x * direction.x + direction.y * direction.y);
+    float angle = atan2f(direction.y, direction.x);
+    float speed = distance * 0.04;
+    velocity.x = cosf(angle) * speed;
+    velocity.y = sinf(angle) * speed;
+    return aimingPoint;
+}
+
+Rectangle Player::GetRect() {
+    return {position.x, position.y, 15, 50};
 }
 
 

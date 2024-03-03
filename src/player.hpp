@@ -3,18 +3,23 @@
 
 class Player {
     public:
+        Player();
+        ~Player();
+
+        Rectangle mapShape = {0, 600, 1280, 250};
         Vector2 aimingPoint;
         Vector2 position;
-        int health;
+        Vector2 velocity;
+        int health = 100;
+        bool playerTurn = false;
 
-        void takeAim();
-        Vector2 move();
-        void init();
-        void displayHealth();
+        void Init(int player);
+        void DisplayHealth();
+        Vector2 Move();
+        Vector2 TakeAim();
+        Rectangle GetRect();
         
-        Player(Vector2 startPos);
-        ~Player();
         
     private:
-
+        //Texture2D image;
 };
