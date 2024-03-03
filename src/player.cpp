@@ -12,9 +12,15 @@ Player::~Player() {
     //UnloadTexture(image);
 }
 
-void Player::Init(int player) {
-    if (player == 1) position = {100, mapShape.y - 50};
-    else position = {1180, mapShape.y - 50};
+void Player::Init(int player, bool gameStart) {
+    if (player == 1 && !isInit) {
+        position = {100, mapShape.y - 50};
+        isInit = true;
+    }
+    else if (player == 2 && !isInit) {
+        position = {1180, mapShape.y - 50};
+        isInit = true;
+    }
     //DrawTextureV(image, {200, 150}, WHITE);
     DrawRectangleV(position, {15, 50}, BROWN);
     DisplayHealth();

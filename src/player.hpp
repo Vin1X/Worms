@@ -13,7 +13,7 @@ class Player {
         int health = 100;
         bool playerTurn = false;
 
-        void Init(int player);
+        void Init(int player, bool gameStart);
         void DisplayHealth();
         Vector2 Move();
         Vector2 TakeAim();
@@ -21,5 +21,6 @@ class Player {
         
         
     private:
+        bool isInit = false;
         //Texture2D image;
 };

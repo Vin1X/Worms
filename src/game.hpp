@@ -6,7 +6,12 @@
 
 class Game {
     public:
-        int remainingMoves;
+        int remainingMoves = 1;
+        int shots = 2;
+        int round = 3;
+        int currentPlayer = 1;
+        bool pause = false;
+        bool gameStart = false;
 
         void Init();
         void Update();
@@ -21,5 +26,5 @@ class Game {
         Player player;
         Player player2;
         Projectile projectile;
-
+        Projectile projectile2;
 };

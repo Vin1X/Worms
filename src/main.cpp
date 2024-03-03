@@ -5,23 +5,35 @@
 #include "projectile.hpp"
 #include "impact.hpp"
 #include "game.hpp"
+#include "ui.hpp"
 
 /*/ GLOBAL DEFINITIONS /*/
-int screenWidth = 1280;
-int screenHeight = 720;
 Game game;
+Ui ui;
 
 int main() {
-    InitWindow(screenWidth, screenHeight, "Worms");
+    InitWindow(ui.screenWidth, ui.screenHeight, "Worms");
     SetTargetFPS(60);
 
     while (!WindowShouldClose()) {
         BeginDrawing();
 
+        if (!game.gameStart) {
+            ui.Init();
+        }
+        else {
+            game.Init();
+            game.Update();
+
+            // Begin with Player 1
+            game.Rounds();
+
+            ui.Rounds(game.round, game.remainingMoves, game.shots);
+        }
+        if (game.pause && game.gameStart) ui.Pause();
+
         game.HandleInput();
-        game.Update();
-        game.Init();
-        game.Rounds();
+
 
         EndDrawing();
     }
