@@ -36,7 +36,16 @@ void Game::Update() {
         DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
         map.Explosion(projectile2.position);
     }
-
+    if (CheckCollisionCircleRec(projectile.position, projectile.projectileRadius, player2.GetRect()) && projectile.active) {
+        player2.health -= 20;
+        projectile.active = false;
+        DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
+    }
+    if (CheckCollisionCircleRec(projectile2.position, projectile2.projectileRadius, player.GetRect()) && projectile2.active) {
+        player.health -= 20;
+        projectile2.active = false;
+        DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
+    }
 }
 
 void Game::HandleInput() {
@@ -70,6 +79,7 @@ void Game::Rounds() {
             projectile.velocity = player.velocity;
             currentPlayer = 2;
             player2.playerTurn = true;
+            shots--;
         }
     } else  if (currentPlayer == 2) {
         player2.playerTurn = true;
@@ -81,9 +91,21 @@ void Game::Rounds() {
             projectile2.velocity = player2.velocity;
             currentPlayer = 1;
             player.playerTurn = true;
+            shots--;
         }
     }
+    //round++;
 
 
     //Player 2
+}
+
+bool Game::GameOver() {
+    if (player.health <= 0) {
+        return true;
+    } else if (player2.health <= 0) {
+        return true;
+    } else {
+        return false;
+    }
 }

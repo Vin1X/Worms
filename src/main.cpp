@@ -24,6 +24,9 @@ int main() {
         else {
             game.Init();
             game.Update();
+            if (game.GameOver()) {
+                ui.GameOver();
+            }
 
             // Begin with Player 1
             game.Rounds();

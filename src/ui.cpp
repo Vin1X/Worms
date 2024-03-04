@@ -24,10 +24,11 @@ void Ui::Rounds(int remainingRounds, int remainingMoves, int remainingShots) {
 
 void Ui::Pause() {
     //DrawText("Game Paused", screenCenter.x, screenCenter.y, 40, DARKGRAY);
-    DrawText("GAME PAUSED", screenCenter.x - MeasureText("GAME PAUSED", 40) / 2, screenCenter.y - 40, 40, GRAY);
+    DrawText("GAME PAUSED", screenCenter.x - MeasureText("GAME PAUSED", 40) / 2, screenCenter.y - 40, 40, DARKGRAY);
 }
 
 void Ui::GameOver() {
-    DrawText("GAME OVER", screenCenter.x - MeasureText("GAME OVER", 40) / 2, screenCenter.y - 10, 40, DARKGRAY);
-    DrawText("PRESS [ENTER] TO RESTART", screenCenter.x - MeasureText("PRESS [ENTER] TO RESTART", 20) / 2, screenCenter.y + 10, 20, DARKGRAY);
+    ClearBackground(RAYWHITE);
+    DrawText("GAME OVER", screenCenter.x - MeasureText("GAME OVER", 40) / 2, screenCenter.y - 20, 40, DARKGRAY);
+    DrawText("PRESS [ENTER] TO RESTART", screenCenter.x - MeasureText("PRESS [ENTER] TO RESTART", 20) / 2, screenCenter.y + 20, 20, DARKGRAY);
 }

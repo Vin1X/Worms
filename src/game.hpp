@@ -6,9 +6,9 @@
 
 class Game {
     public:
-        int remainingMoves = 1;
-        int shots = 2;
-        int round = 3;
+        int remainingMoves = 5;
+        int shots = 1;
+        int round = 0;
         int currentPlayer = 1;
         bool pause = false;
         bool gameStart = false;
@@ -17,6 +17,7 @@ class Game {
         void Update();
         void HandleInput();
         void Rounds();
+        bool GameOver();
         Game();
         ~Game();
 
@@ -27,4 +28,5 @@ class Game {
         Player player2;
         Projectile projectile;
         Projectile projectile2;
+        //Player player[2];
 };
