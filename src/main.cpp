@@ -37,7 +37,6 @@ int main() {
 
         game.HandleInput();
 
-
         EndDrawing();
     }
     CloseWindow();

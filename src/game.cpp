@@ -7,103 +7,93 @@ Game::~Game() {}
 
 void Game::Init() {
     map.Init();
-    player2.Init(2, gameStart);
-    player.Init(1, gameStart);
-    projectile.Init();
-    projectile2.Init();
-
-    
-
+    player[0].Init(1, gameStart);
+    player[1].Init(2, gameStart);
+    projectile[0].Init();
+    projectile[1].Init();
 }
 
 void Game::Update() {
-
     if (!pause) {
-        projectile.Update();
-        projectile2.Update();
-        //player.Move();
-        //player2.Move();
-        //player.TakeAim();
-        //player2.TakeAim();
+        projectile[0].Update();
+        projectile[1].Update();
     }
-    if (CheckCollisionCircleRec(projectile.position, projectile.projectileRadius, map.mapShape)) {
-        projectile.active = false;
+
+    // Refactor to new function UpdatePlayer() ?
+    if (CheckCollisionCircleRec(projectile[0].position, projectile[0].projectileRadius, map.mapShape)) {
+        projectile[0].active = false;
         DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
-        map.Explosion(projectile.position);
+        projectile[0].Explosion();
     }
-    if (CheckCollisionCircleRec(projectile2.position, projectile2.projectileRadius, map.mapShape)) {
-        projectile2.active = false;
+    if (CheckCollisionCircleRec(projectile[1].position, projectile[1].projectileRadius, map.mapShape)) {
+        projectile[1].active = false;
         DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
-        map.Explosion(projectile2.position);
+        projectile[1].Explosion();
     }
-    if (CheckCollisionCircleRec(projectile.position, projectile.projectileRadius, player2.GetRect()) && projectile.active) {
-        player2.health -= 20;
-        projectile.active = false;
+    if (CheckCollisionCircleRec(projectile[0].position, projectile[0].projectileRadius, player[1].GetRect()) && projectile[0].active) {
+        player[1].health -= 20;
+        projectile[0].active = false;
         DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
     }
-    if (CheckCollisionCircleRec(projectile2.position, projectile2.projectileRadius, player.GetRect()) && projectile2.active) {
-        player.health -= 20;
-        projectile2.active = false;
+    if (CheckCollisionCircleRec(projectile[1].position, projectile[1].projectileRadius, player[0].GetRect()) && projectile[1].active) {
+        player[0].health -= 20;
+        projectile[1].active = false;
         DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
     }
 }
 
 void Game::HandleInput() {
-    /*if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        projectile.active = true;
-        projectile.position = {player.position.x + 10, player.position.y + 25};
-        projectile.velocity = player.velocity;
-    }*/
-
-    /*if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D)) player.position.x += 10;
-    else if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A)) player.position.x -= 10;*/
-
     if (IsKeyPressed(KEY_P)) {
         pause = !pause;
     }
-    if (IsKeyPressed(KEY_ENTER)) {
+    if (!gameStart && IsKeyPressed(KEY_ENTER)) {
         gameStart = true;
+    }
+    if (GameOver()) {
+        if (IsKeyPressed(KEY_ENTER)) {
+            player[0].health = 100;
+            player[1].health = 100;
+            shots = 1;
+            currentPlayer = 1;
+            round = 0;
+        }
     }
 }
 
 void Game::Rounds() {
-    //Each Player has a turn with a set amount of moves and shots
-    //Player 1
+    // Each Player has a turn with a set amount of moves and shots
+    // New function to reduce redundancy!
     if (currentPlayer == 1) {
-        player.playerTurn = true;
-        player.TakeAim();
-        player.Move();
+        player[0].playerTurn = true;
+        player[0].TakeAim();
+        player[0].Move();
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            projectile.active = true;
-            projectile.position = {player.position.x + 10, player.position.y + 25};
-            projectile.velocity = player.velocity;
+            projectile[0].active = true;
+            projectile[0].position = {player[0].position.x + 10, player[0].position.y + 25};
+            projectile[0].velocity = player[0].velocity;
             currentPlayer = 2;
-            player2.playerTurn = true;
+            player[1].playerTurn = true;
             shots--;
         }
     } else  if (currentPlayer == 2) {
-        player2.playerTurn = true;
-        player2.TakeAim();
-        player2.Move();
+        player[1].playerTurn = true;
+        player[1].TakeAim();
+        player[1].Move();
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            projectile2.active = true;
-            projectile2.position = {player2.position.x + 10, player2.position.y + 25};
-            projectile2.velocity = player2.velocity;
+            projectile[1].active = true;
+            projectile[1].position = {player[1].position.x + 10, player[1].position.y + 25};
+            projectile[1].velocity = player[1].velocity;
             currentPlayer = 1;
-            player.playerTurn = true;
+            player[0].playerTurn = true;
             shots--;
         }
     }
-    //round++;
-
-
-    //Player 2
 }
 
 bool Game::GameOver() {
-    if (player.health <= 0) {
+    if (player[0].health <= 0) {
         return true;
-    } else if (player2.health <= 0) {
+    } else if (player[1].health <= 0) {
         return true;
     } else {
         return false;
