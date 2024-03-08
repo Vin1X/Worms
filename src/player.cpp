@@ -4,6 +4,8 @@
 #include <math.h>
 #include "map.hpp"
 
+using namespace std;
+
 Player::Player() {
     //image = LoadTexture("img/player.png");
 }
@@ -13,6 +15,10 @@ Player::~Player() {
 }
 
 void Player::Init(int player, bool gameStart) {
+    //DrawTextureV(image, {200, 150}, WHITE);
+    DrawRectangleV(position, {15, 50}, BROWN);
+    DisplayHealth();
+
     if (player == 1 && !isInit) {
         position = {100, mapShape.y - 50};
         isInit = true;
@@ -21,19 +27,11 @@ void Player::Init(int player, bool gameStart) {
         position = {1180, mapShape.y - 50};
         isInit = true;
     }
-    //DrawTextureV(image, {200, 150}, WHITE);
-    DrawRectangleV(position, {15, 50}, BROWN);
-    DisplayHealth();
-    
-    if (playerTurn == true) {
-        //Move();
-        //TakeAim();
-    }
 }
 
 void Player::DisplayHealth() {
     DrawText("Health: ", position.x - 40, position.y - 20, 20, BLACK);
-    DrawText(std::to_string(health).c_str(), position.x + 40, position.y - 20, 20, BLACK);
+    DrawText(to_string(health).c_str(), position.x + 40, position.y - 20, 20, BLACK);
 }
 
 Vector2 Player::Move() {
@@ -66,5 +64,3 @@ Vector2 Player::TakeAim() {
 Rectangle Player::GetRect() {
     return {position.x, position.y, 15, 50};
 }
-
-

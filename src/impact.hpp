@@ -5,9 +5,11 @@ class Impact {
     public:
         Vector2 position;
         bool active;
-        void explosion(Vector2 position);
 
         Impact();
         ~Impact();
+
+        void explosion(Vector2 position);
     private:
+    
 };

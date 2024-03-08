@@ -13,20 +13,17 @@ class Game {
         bool pause = false;
         bool gameStart = false;
 
+        Game();
+        ~Game();
+
         void Init();
         void Update();
         void HandleInput();
         void Rounds();
         bool GameOver();
-        Game();
-        ~Game();
-
 
     private:
         Map map;
-        Player player;
-        Player player2;
-        Projectile projectile;
-        Projectile projectile2;
-        //Player player[2];
+        Projectile projectile[2];
+        Player player[2];
 };
