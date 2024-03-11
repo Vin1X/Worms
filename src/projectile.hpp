@@ -3,8 +3,8 @@
 
 class Projectile {
     public:
-        float projectileRadius;
         bool active;
+        float projectileRadius;
         Vector2 target;
         Vector2 position;
         Vector2 velocity;

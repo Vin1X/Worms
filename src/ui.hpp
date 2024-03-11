@@ -10,11 +10,11 @@ class Ui {
 
         Ui();
         ~Ui();
+
         void Init();
-        void Rounds(int remainingRounds, int remainingMoves, int remainingShots);
+        void Rounds(int currentRound, int remainingMoves);
         void Pause();
         void GameOver();
-        
 
     private:
         Vector2 screenCenter = {screenWidth / 2, screenHeight / 2};

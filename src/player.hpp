@@ -1,27 +1,35 @@
 #pragma once
-#include "raylib.h"
+#include <raylib.h>
 #include "projectile.hpp"
 
 class Player {
     public:
-        Rectangle mapShape = {0, 600, 1280, 250};
         Vector2 aimingPoint;
         Vector2 position;
         Vector2 velocity;
+        Vector2 origin;
         int health = 100;
+        int moves = 5;
         bool playerTurn = false;
 
         Player();
         ~Player();
 
-        Vector2 Move();
+        bool Move();
         Vector2 TakeAim();
         Rectangle GetRect();
-        void Init(int player, bool gameStart);
+        void Init(int player);
         void DisplayHealth();
         
     private:
-        //Texture2D image;
-        bool isInit = false;
+        Rectangle mapShape = {0, 600, 1280, 250};
         Projectile projectile;
+
+        Vector2 direction;
+        float distance;
+        float speed;
+        float angle;
+
+        Texture2D playermodel;
+        bool isInit = false;
 };
