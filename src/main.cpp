@@ -31,9 +31,9 @@ int main() {
             // Begin with Player 1
             game.Rounds();
 
-            ui.Rounds(game.round, game.remainingMoves, game.shots);
+            ui.Rounds(game.round, game.moves);
         }
-        if (game.pause && game.gameStart) ui.Pause();
+        if (game.pause && game.gameStart && !game.GameOver()) ui.Pause();
 
         game.HandleInput();
 

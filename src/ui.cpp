@@ -13,13 +13,11 @@ void Ui::Init() {
     DrawText("PRESS [ENTER] TO START", screenCenter.x - MeasureText("PRESS [ENTER] TO START", 20) / 2, screenCenter.y + 20, 20, DARKGRAY);    
 }
 
-void Ui::Rounds(int remainingRounds, int remainingMoves, int remainingShots) {
-    std::string round = "Round: " + std::to_string(remainingRounds);
+void Ui::Rounds(int currentRound, int remainingMoves) {
+    std::string round = "Round: " + std::to_string(currentRound);
     std::string moves = "Moves: " + std::to_string(remainingMoves);
-    std::string shots = "Shots: " + std::to_string(remainingShots);
     DrawText(round.c_str(), screenCenter.x - MeasureText(round.c_str(), 30) / 2, 10, 30, DARKGRAY);
     DrawText(moves.c_str(), 10, 10, 20, DARKGRAY);
-    DrawText(shots.c_str(), 10, 35, 20, DARKGRAY);
 }
 
 void Ui::Pause() {

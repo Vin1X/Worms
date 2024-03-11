@@ -6,12 +6,10 @@
 
 class Game {
     public:
-        int remainingMoves = 5;
-        int shots = 1;
-        int round = 0;
-        int currentPlayer = 1;
         bool pause = false;
         bool gameStart = false;
+        int moves;
+        int round = 0;
 
         Game();
         ~Game();
@@ -23,6 +21,7 @@ class Game {
         bool GameOver();
 
     private:
+        int currentPlayer = 0;
         Map map;
         Projectile projectile[2];
         Player player[2];
