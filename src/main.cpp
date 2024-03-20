@@ -33,7 +33,7 @@ int main() {
 
             ui.Rounds(game.round, game.moves);
         }
-        if (game.pause && game.gameStart && !game.GameOver()) ui.Pause();
+        if (game.pause) ui.Pause();
 
         game.HandleInput();
 

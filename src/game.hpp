@@ -2,7 +2,6 @@
 #include "raylib.h"
 #include "player.hpp"
 #include "map.hpp"
-#include "projectile.hpp"
 
 class Game {
     public:
@@ -23,6 +22,5 @@ class Game {
     private:
         int currentPlayer = 0;
         Map map;
-        Projectile projectile[2];
         Player player[2];
 };

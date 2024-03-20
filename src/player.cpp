@@ -7,6 +7,7 @@ using namespace std;
 
 Player::Player() {
     origin = {15, 50};
+    projectile = Projectile();
 }
 
 Player::~Player() {
@@ -15,10 +16,6 @@ Player::~Player() {
 
 void Player::Init(int player) {
     DrawFPS(50, 50);
-    //playermodel = LoadTexture("img/idle.png");
-    //DrawTexture(playermodel, position.x, position.y, WHITE);
-
-
     DrawRectangleV(position, origin, BROWN);
     DisplayHealth();
 
@@ -31,6 +28,7 @@ void Player::Init(int player) {
         position = {1180, mapShape.y - origin.y};
         isInit = true;
     }
+    projectile.Init();
 }
 
 // Display player health

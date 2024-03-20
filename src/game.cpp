@@ -7,46 +7,47 @@ Game::~Game() {}
 
 void Game::Init() {
     map.Init();
-    player[0].Init(1);
-    player[1].Init(2);
-    projectile[0].Init();
-    projectile[1].Init();
+    int playerNumber = 1;
+    for (auto &player : player) {
+        player.Init(playerNumber);
+        playerNumber++;
+    }
 }
 
 void Game::Update() {
-    projectile[0].Update();
-    projectile[1].Update();
-    bool player1Hit = CheckCollisionCircleRec(projectile[0].position, projectile[0].projectileRadius, player[1].GetRect());
-    bool self1Hit = CheckCollisionCircleRec(projectile[0].position, projectile[0].projectileRadius + 20, player[0].GetRect());
-    bool mapImpact1 = CheckCollisionCircleRec(projectile[0].position, projectile[0].projectileRadius, map.mapShape);
+    player[0].projectile.Update();
+    player[1].projectile.Update();
+    bool player1Hit = CheckCollisionCircleRec(player[0].projectile.position, player[0].projectile.projectileRadius, player[1].GetRect());
+    bool self1Hit = CheckCollisionCircleRec(player[0].projectile.position, player[0].projectile.projectileRadius + 20, player[0].GetRect());
+    bool mapImpact1 = CheckCollisionCircleRec(player[0].projectile.position, player[0].projectile.projectileRadius, map.mapShape);
 
-    bool player2Hit = CheckCollisionCircleRec(projectile[1].position, projectile[1].projectileRadius, player[0].GetRect());
-    bool self2Hit = CheckCollisionCircleRec(projectile[1].position, projectile[1].projectileRadius + 20, player[1].GetRect());
-    bool mapImpcat2 = CheckCollisionCircleRec(projectile[1].position, projectile[1].projectileRadius, map.mapShape);
+    bool player2Hit = CheckCollisionCircleRec(player[1].projectile.position, player[1].projectile.projectileRadius, player[0].GetRect());
+    bool self2Hit = CheckCollisionCircleRec(player[1].projectile.position, player[1].projectile.projectileRadius + 20, player[1].GetRect());
+    bool mapImpcat2 = CheckCollisionCircleRec(player[1].projectile.position, player[1].projectile.projectileRadius, map.mapShape);
 
     // Refactor to new function Impact() ?
     // Projectile1 & Map
     if (mapImpact1) {
-        projectile[0].active = false;
+        player[0].projectile.active = false;
         DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
-        if (!self1Hit) projectile[0].Explosion();
+        if (!self1Hit) player[0].projectile.Explosion();
     }
     // Projectile1 & P2
-    if (player1Hit && projectile[0].active) {
+    if (player1Hit && player[0].projectile.active) {
         player[1].health -= 20;
-        projectile[0].active = false;
+        player[0].projectile.active = false;
         DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
     }
     // Projectile2 & Map
     if (mapImpcat2) {
-        projectile[1].active = false;
+        player[1].projectile.active = false;
         DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
-        if (!self2Hit) projectile[1].Explosion();
+        if (!self2Hit) player[1].projectile.Explosion();
     }
     // Projectile2 & P1
-    if (player2Hit && projectile[1].active) {
+    if (player2Hit && player[0].projectile.active) {
         player[0].health -= 20;
-        projectile[1].active = false;
+        player[1].projectile.active = false;
         DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
     }
 }
@@ -68,20 +69,23 @@ void Game::HandleInput() {
 
 void Game::Rounds() {
     // Each Player has a turn with a set amount of moves and a shot
-    if (!pause && !GameOver()) {
-        player[currentPlayer].playerTurn = true;
-        player[currentPlayer].TakeAim();
-        if (player[currentPlayer].moves > 0) {
-            if (player[currentPlayer].Move()) {
-                player[currentPlayer].moves--;
-                moves = player[currentPlayer].moves; // Das hier abändern, projectile soll Teil vom Player sein
+    Player& currentPlayerRef = player[currentPlayer];
+    Player& nextPlayerRef = player[(currentPlayer + 1) % 2];
+
+    if (!pause && !GameOver() && !nextPlayerRef.projectile.active) {
+        currentPlayerRef.playerTurn = true;
+        currentPlayerRef.TakeAim();
+        if (currentPlayerRef.moves > 0) {
+            if (currentPlayerRef.Move()) {
+                currentPlayerRef.moves--;
+                moves = currentPlayerRef.moves; 
             }
         }
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            projectile[currentPlayer].active = true; // Das hier abändern
-            projectile[currentPlayer].position = {player[currentPlayer].position.x + 10, player[currentPlayer].position.y + 25}; // Das hier abändern
-            projectile[currentPlayer].velocity = player[currentPlayer].velocity; // Das hier abändern
-            player[currentPlayer].playerTurn = false;
+            currentPlayerRef.projectile.active = true; 
+            currentPlayerRef.projectile.position = {currentPlayerRef.position.x + 10, currentPlayerRef.position.y + 25}; 
+            currentPlayerRef.projectile.velocity = currentPlayerRef.velocity; 
+            currentPlayerRef.playerTurn = false;
             currentPlayer = (currentPlayer + 1) % 2;
             player[currentPlayer].moves = 5;
             player[currentPlayer].playerTurn = true;
