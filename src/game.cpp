@@ -1,4 +1,4 @@
-#include "raylib.h"
+#include <raylib.h>
 #include "game.hpp"
 
 Game::Game() {}
@@ -16,38 +16,38 @@ void Game::Init() {
 void Game::Update() {
     for (int i = 0; i < 2; ++i) {
         player[i].projectile.Update();
-        bool playerHit = CheckCollisionCircleRec(player[i].projectile.position, player[i].projectile.projectileRadius, player[(i + 1) % 2].GetRect());
-        bool selfHit = CheckCollisionCircleRec(player[i].projectile.position, player[i].projectile.projectileRadius + 20, player[i].GetRect());
-        bool mapImpact = CheckCollisionCircleRec(player[i].projectile.position, player[i].projectile.projectileRadius, map.mapShape);
-        bool outOfMap = (player[i].projectile.position.x < 0 || player[i].projectile.position.x > GetScreenWidth() || player[i].projectile.position.y > GetScreenHeight() || player[i].projectile.position.y < 0);
-
-        // Map impact
-        if (mapImpact) {
-            player[i].projectile.active = false;
-            DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
-            if (!selfHit) {
-                explosions.AddExplosion(player[i].projectile.position);
-            }
-            //if (!selfHit) player[i].projectile.Explosion();
-        }
-
-        // Player impact
-        if ((playerHit && player[i].projectile.active) || (playerHit && mapImpact)) {
-            player[(i + 1) % 2].health -= 20;
-            player[i].projectile.active = false;
-            DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
-        }
-
-        // Out of map
-        if (outOfMap) {
-            player[i].projectile.active = false;
-        }
+        CheckCollision(i);
     }
     explosions.Draw();
 }
 
-void Game::CheckCollision() {
+void Game::CheckCollision(int i) {
+    bool playerHit = CheckCollisionCircleRec(player[i].projectile.position, player[i].projectile.projectileRadius, player[(i + 1) % 2].GetRect());
+    bool selfHit = CheckCollisionCircleRec(player[i].projectile.position, player[i].projectile.projectileRadius + 20, player[i].GetRect());
+    bool mapImpact = CheckCollisionCircleRec(player[i].projectile.position, player[i].projectile.projectileRadius, map.mapShape);
+    bool outOfMap = (player[i].projectile.position.x < 0 || player[i].projectile.position.x > GetScreenWidth() || player[i].projectile.position.y > GetScreenHeight() || player[i].projectile.position.y < 0);
 
+    // Map impact
+    if (mapImpact) {
+        player[i].projectile.active = false;
+        DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
+        if (!selfHit) {
+            explosions.AddExplosion(player[i].projectile.position);
+        }
+        //if (!selfHit) player[i].projectile.Explosion();
+    }
+
+    // Player impact
+    if ((playerHit && player[i].projectile.active) || (playerHit && mapImpact)) {
+        player[(i + 1) % 2].health -= 20;
+        player[i].projectile.active = false;
+        DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
+    }
+
+    // Out of map
+    if (outOfMap) {
+        player[i].projectile.active = false;
+    }
 }
 
 void Game::HandleInput() {
@@ -91,9 +91,7 @@ void Game::Rounds() {
 }
 
 bool Game::GameOver() {
-    if (player[0].health <= 0) {
-        return true;
-    } else if (player[1].health <= 0) {
+    if (player[0].health <= 0 || player[1].health <= 0) {
         return true;
     } else {
         return false;

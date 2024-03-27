@@ -18,7 +18,7 @@ class Game {
         void Update();
         void HandleInput();
         void Rounds();
-        void CheckCollision();
+        void CheckCollision(int i);
         bool GameOver();
 
     private:
