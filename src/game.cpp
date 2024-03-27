@@ -6,50 +6,48 @@ Game::Game() {}
 Game::~Game() {}
 
 void Game::Init() {
-    map.Init();
-    int playerNumber = 1;
     for (auto &player : player) {
         player.Init(playerNumber);
         playerNumber++;
     }
+    map.Init();
 }
 
 void Game::Update() {
-    player[0].projectile.Update();
-    player[1].projectile.Update();
-    bool player1Hit = CheckCollisionCircleRec(player[0].projectile.position, player[0].projectile.projectileRadius, player[1].GetRect());
-    bool self1Hit = CheckCollisionCircleRec(player[0].projectile.position, player[0].projectile.projectileRadius + 20, player[0].GetRect());
-    bool mapImpact1 = CheckCollisionCircleRec(player[0].projectile.position, player[0].projectile.projectileRadius, map.mapShape);
+    for (int i = 0; i < 2; ++i) {
+        player[i].projectile.Update();
+        bool playerHit = CheckCollisionCircleRec(player[i].projectile.position, player[i].projectile.projectileRadius, player[(i + 1) % 2].GetRect());
+        bool selfHit = CheckCollisionCircleRec(player[i].projectile.position, player[i].projectile.projectileRadius + 20, player[i].GetRect());
+        bool mapImpact = CheckCollisionCircleRec(player[i].projectile.position, player[i].projectile.projectileRadius, map.mapShape);
+        bool outOfMap = (player[i].projectile.position.x < 0 || player[i].projectile.position.x > GetScreenWidth() || player[i].projectile.position.y > GetScreenHeight() || player[i].projectile.position.y < 0);
 
-    bool player2Hit = CheckCollisionCircleRec(player[1].projectile.position, player[1].projectile.projectileRadius, player[0].GetRect());
-    bool self2Hit = CheckCollisionCircleRec(player[1].projectile.position, player[1].projectile.projectileRadius + 20, player[1].GetRect());
-    bool mapImpcat2 = CheckCollisionCircleRec(player[1].projectile.position, player[1].projectile.projectileRadius, map.mapShape);
+        // Map impact
+        if (mapImpact) {
+            player[i].projectile.active = false;
+            DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
+            if (!selfHit) {
+                explosions.AddExplosion(player[i].projectile.position);
+            }
+            //if (!selfHit) player[i].projectile.Explosion();
+        }
 
-    // Refactor to new function Impact() ?
-    // Projectile1 & Map
-    if (mapImpact1) {
-        player[0].projectile.active = false;
-        DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
-        if (!self1Hit) player[0].projectile.Explosion();
+        // Player impact
+        if ((playerHit && player[i].projectile.active) || (playerHit && mapImpact)) {
+            player[(i + 1) % 2].health -= 20;
+            player[i].projectile.active = false;
+            DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
+        }
+
+        // Out of map
+        if (outOfMap) {
+            player[i].projectile.active = false;
+        }
     }
-    // Projectile1 & P2
-    if (player1Hit && player[0].projectile.active) {
-        player[1].health -= 20;
-        player[0].projectile.active = false;
-        DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
-    }
-    // Projectile2 & Map
-    if (mapImpcat2) {
-        player[1].projectile.active = false;
-        DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
-        if (!self2Hit) player[1].projectile.Explosion();
-    }
-    // Projectile2 & P1
-    if (player2Hit && player[0].projectile.active) {
-        player[0].health -= 20;
-        player[1].projectile.active = false;
-        DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
-    }
+    explosions.Draw();
+}
+
+void Game::CheckCollision() {
+
 }
 
 void Game::HandleInput() {
@@ -60,10 +58,7 @@ void Game::HandleInput() {
         gameStart = true;
     }
     if (GameOver() && IsKeyPressed(KEY_ENTER)) {
-        player[0].health = 100;
-        player[1].health = 100;
-        currentPlayer = 0;
-        round = 0;
+        Restart();
     }
 }
 
@@ -82,6 +77,7 @@ void Game::Rounds() {
             }
         }
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            // Parse data to projectile
             currentPlayerRef.projectile.active = true; 
             currentPlayerRef.projectile.position = {currentPlayerRef.position.x + 10, currentPlayerRef.position.y + 25}; 
             currentPlayerRef.projectile.velocity = currentPlayerRef.velocity; 
@@ -102,4 +98,15 @@ bool Game::GameOver() {
     } else {
         return false;
     }
+}
+
+void Game::Restart() {
+    for (int i = 0; i < 2; i++) {
+        player[i].health = 100;
+        player[i].isInit = false;
+        player[i].projectile.active = false;
+    }
+    currentPlayer = 0;
+    round = 0;
+    explosions.ClearExplosions();
 }

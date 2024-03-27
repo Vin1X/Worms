@@ -1,12 +1,11 @@
 #pragma once
-#include "raylib.h"
-
+#include <raylib.h>
 #include <string>
 
 class Ui {
     public:
-        int screenWidth = 1280;
-        int screenHeight = 720;
+        float screenWidth = 1280;
+        float screenHeight = 720;
 
         Ui();
         ~Ui();

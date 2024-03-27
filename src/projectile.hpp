@@ -1,9 +1,9 @@
 #pragma once
-#include "raylib.h"
+#include <raylib.h>
 
 class Projectile {
     public:
-        bool active;
+        bool active = false;
         float projectileRadius;
         Vector2 target;
         Vector2 position;
@@ -15,5 +15,6 @@ class Projectile {
         void Update();
         void Init();
         void Explosion();
+
     private:
 };

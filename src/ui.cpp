@@ -21,7 +21,6 @@ void Ui::Rounds(int currentRound, int remainingMoves) {
 }
 
 void Ui::Pause() {
-    //DrawText("Game Paused", screenCenter.x, screenCenter.y, 40, DARKGRAY);
     DrawText("GAME PAUSED", screenCenter.x - MeasureText("GAME PAUSED", 40) / 2, screenCenter.y - 40, 40, DARKGRAY);
 }
 

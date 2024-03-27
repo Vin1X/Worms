@@ -1,5 +1,6 @@
 #pragma once
-#include "raylib.h"
+#include <raylib.h>
+#include "explosions.hpp"
 
 class Map {
     public:
@@ -12,5 +13,5 @@ class Map {
         void Init();
 
     private:
-
+        Image background = LoadImage("img/background.jpg");
 };

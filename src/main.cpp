@@ -1,9 +1,5 @@
 #include <iostream>
-#include "raylib.h"
-#include "player.hpp"
-#include "map.hpp"
-#include "projectile.hpp"
-#include "impact.hpp"
+#include <raylib.h>
 #include "game.hpp"
 #include "ui.hpp"
 
