@@ -40,11 +40,19 @@ void Player::DisplayHealth() {
 // Move player and return true if key is pressed for game logic
 bool Player::Move() {
     if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D)) {
-        position.x += 10;
+        if (position.x + origin.x < GetScreenWidth()) {
+            position.x += 10;
+        } else {
+            position.x = GetScreenWidth() - origin.x;
+        }
         return true;
     }
     else if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A)) {
-        position.x -= 10;
+        if (position.x > 0) {
+            position.x -= 10;
+        } else {
+            position.x = 0;
+        }
         return true;
     }
     else return false;
