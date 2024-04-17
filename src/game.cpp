@@ -1,17 +1,32 @@
 #include <raylib.h>
 #include "game.hpp"
 
-Game::Game() {}
+Game::Game() {
+    /*
+    4 game states: 
+    start = 0
+    running = 1
+    pause = 2
+    game over = 3
+    */
+}
 
 Game::~Game() {}
 
 // Initialize players and map
 void Game::Init()
 {
-    for (auto &player : player)
+    if (gameState == 0)
     {
-        player.Init(playerNumber);
-        playerNumber++;
+        ui.Init();
+    }
+    else if (gameState == 1) 
+    {
+        for (auto &player : player)
+        {
+            player.Init(playerNumber);
+            playerNumber++;
+        }
     }
     map.Init();
 }
@@ -29,6 +44,7 @@ void Game::Update()
     {
         explosions.CleanUp();
     }
+    GameOver();
 }
 
 // Check collision between player, map and projectile
@@ -58,8 +74,8 @@ void Game::CheckCollision(int i)
     // Player impact
     if ((playerHit && player[i].projectile.active) || (playerHit && mapImpact))
     {
-        player[(i + 1) % 2].health -= 20;
         player[i].projectile.active = false;
+        player[(i + 1) % 2].health -= 20;
         DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
     }
 
@@ -73,15 +89,20 @@ void Game::CheckCollision(int i)
 // Handle input for whole instance
 void Game::HandleInput()
 {
-    if (IsKeyPressed(KEY_P))
+    if (gameState == 2 && IsKeyPressed(KEY_P))
     {
-        pause = !pause;
-    }
-    if (!gameStart && IsKeyPressed(KEY_ENTER))
+        gameState  = 1;
+    } 
+    else if (gameState == 1 && IsKeyPressed(KEY_P))
     {
-        gameStart = true;
+        gameState = 2;
+        ui.Pause();
     }
-    if (GameOver() && IsKeyPressed(KEY_ENTER))
+    if (gameState == 0 && IsKeyPressed(KEY_ENTER))
+    {
+        gameState = 1;
+    }
+    if (gameState == 3 && IsKeyPressed(KEY_ENTER))
     {
         Restart();
     }
@@ -94,7 +115,7 @@ void Game::Rounds()
     Player& currentPlayerRef = player[currentPlayer];
     Player& nextPlayerRef = player[(currentPlayer + 1) % 2];
 
-    if (!pause && !GameOver() && !nextPlayerRef.projectile.active)
+    if (gameState == 1 && !nextPlayerRef.projectile.active)
     {
         currentPlayerRef.playerTurn = true;
         currentPlayerRef.TakeAim();
@@ -106,7 +127,7 @@ void Game::Rounds()
                 moves = currentPlayerRef.moves; 
             }
         }
-        // Parse data to projectile and make it move
+        // Shoot projectile
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
             // Parse data to projectile
@@ -120,17 +141,16 @@ void Game::Rounds()
             if (currentPlayer == 0) round++;
         }
     }
+    ui.Rounds(round, player[currentPlayer].moves);
 }
 
 // Return true if game is over
-bool Game::GameOver()
+void Game::GameOver()
 {
     if (player[0].health <= 0 || player[1].health <= 0)
     {
-        return true;
-    } else
-    {
-        return false;
+        gameState = 3;
+        ui.GameOver();
     }
 }
 
@@ -139,10 +159,10 @@ void Game::Restart() {
     for (int i = 0; i < 2; i++)
     {
         player[i].health = 100;
-        player[i].isInit = false;
         player[i].projectile.active = false;
     }
     currentPlayer = 0;
     round = 0;
+    gameState = 1;
     explosions.ClearExplosions();
 }

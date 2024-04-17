@@ -2,13 +2,13 @@
 #include <raylib.h>
 #include "player.hpp"
 #include "map.hpp"
+#include "ui.hpp"
 
 class Game
 {
     public:
         // Variables
-        bool pause = false;
-        bool gameStart = false;
+        int gameState = 0;
         int moves = 5;
         int round = 0;
 
@@ -23,7 +23,7 @@ class Game
         void HandleInput();
         void Rounds();
         void CheckCollision(int i);
-        bool GameOver();
+        void GameOver();
 
     private:
         // Variables
@@ -38,4 +38,5 @@ class Game
         Map map;
         Player player[2];
         Explosions explosions;
+        Ui ui;
 };

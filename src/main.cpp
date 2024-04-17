@@ -4,43 +4,31 @@
 #include "ui.hpp"
 
 /*/ GLOBAL DEFINITIONS /*/
+int screenWidth = 1280;
+int screenHeight = 720;
 Game game;
-Ui ui;
 
 int main()
 {
     // Initialization of game window
-    InitWindow(ui.screenWidth, ui.screenHeight, "Worms");
+    InitWindow(screenWidth, screenHeight, "Worms");
     SetTargetFPS(60);
 
     while (!WindowShouldClose())
     {
         BeginDrawing();
 
-        // Starting window
-        if (!game.gameStart)
-        {
-            ui.Init();
-        }
-        else
-        {
-            // Game initialization
-            game.Init();
-            game.Update();
-            if (game.GameOver())
-            {
-                ui.GameOver();
-            }
-
-            // Begin with Player 1
-            game.Rounds();
-
-            ui.Rounds(game.round, game.moves);
-        }
-        // Pause window
-        if (game.pause) ui.Pause();
-
         game.HandleInput();
+
+        // Game initialization
+        game.Init();
+
+
+        game.Update();
+
+        // Begin with Player 1
+        game.Rounds();
+
 
         EndDrawing();
     }
