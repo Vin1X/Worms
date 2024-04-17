@@ -8,7 +8,6 @@ class Player
         // Variables
         int health = 100;
         int moves = 5;
-        bool isInit = false;
         bool playerTurn = false;
         Vector2 aimingPoint;
         Vector2 position;

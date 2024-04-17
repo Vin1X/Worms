@@ -17,7 +17,7 @@ class Projectile
 
         // Functions
         void Update();
-        void Init();
+        void Draw();
 
     private:
 };

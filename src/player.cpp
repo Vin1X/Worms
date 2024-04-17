@@ -24,17 +24,15 @@ void Player::Init(int player)
     DrawRectangleV(position, origin, BROWN);
     DisplayHealth();
 
-    if (player == 1 && !isInit)
+    if (player == 1)
     {
         position = {100, mapShape.y - origin.y};
-        isInit = true;
     }
-    else if (player == 2 && !isInit)
+    else if (player == 2)
     {
         position = {1180, mapShape.y - origin.y};
-        isInit = true;
     }
-    projectile.Init();
+    projectile.Draw();
 }
 
 // Display player health

@@ -19,7 +19,7 @@ void Projectile::Update()
 }
 
 // Draw projectile
-void Projectile::Init()
+void Projectile::Draw()
 {
     projectileRadius = 5;
     if (active) DrawCircleV(position, projectileRadius, RED);
