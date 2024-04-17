@@ -5,20 +5,22 @@ Projectile::Projectile() {}
 
 Projectile::~Projectile() {}
 
-void Projectile::Update() {
+// Update position of projectile
+void Projectile::Update()
+{
+    // Apply gravity and speed to projectile
     float gravity = 0.2;
-    if (active) {
+    if (active)
+    {
         velocity.y += gravity;
         position.x += velocity.x;
         position.y += velocity.y;
     }
 }
 
-void Projectile::Init() {
+// Draw projectile
+void Projectile::Init()
+{
     projectileRadius = 5;
     if (active) DrawCircleV(position, projectileRadius, RED);
-}
-
-void Projectile::Explosion() {
-    DrawCircle(position.x, position.y, 25, RAYWHITE);
 }

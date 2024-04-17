@@ -7,20 +7,28 @@
 Game game;
 Ui ui;
 
-int main() {
+int main()
+{
+    // Initialization of game window
     InitWindow(ui.screenWidth, ui.screenHeight, "Worms");
     SetTargetFPS(60);
 
-    while (!WindowShouldClose()) {
+    while (!WindowShouldClose())
+    {
         BeginDrawing();
 
-        if (!game.gameStart) {
+        // Starting window
+        if (!game.gameStart)
+        {
             ui.Init();
         }
-        else {
+        else
+        {
+            // Game initialization
             game.Init();
             game.Update();
-            if (game.GameOver()) {
+            if (game.GameOver())
+            {
                 ui.GameOver();
             }
 
@@ -29,6 +37,7 @@ int main() {
 
             ui.Rounds(game.round, game.moves);
         }
+        // Pause window
         if (game.pause) ui.Pause();
 
         game.HandleInput();

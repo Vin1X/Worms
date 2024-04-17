@@ -3,16 +3,20 @@
 #include "player.hpp"
 #include "map.hpp"
 
-class Game {
+class Game
+{
     public:
+        // Variables
         bool pause = false;
         bool gameStart = false;
         int moves = 5;
         int round = 0;
 
+        // Con-/Destructor
         Game();
         ~Game();
 
+        // Functions
         void Restart();
         void Init();
         void Update();
@@ -22,6 +26,7 @@ class Game {
         bool GameOver();
 
     private:
+        // Variables
         int playerNumber = 1;
         int currentPlayer = 0;
         bool playerHit;
@@ -29,6 +34,7 @@ class Game {
         bool mapImpact;
         bool outOfMap;
         
+        // Classes
         Map map;
         Player player[2];
         Explosions explosions;

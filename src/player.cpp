@@ -5,26 +5,32 @@
 
 using namespace std;
 
-Player::Player() {
+// Init projectile class and get player position
+Player::Player()
+{
     origin = {15, 50};
     projectile = Projectile();
 }
 
-Player::~Player() {
+// Unload player model
+Player::~Player()
+{
     //UnloadTexture(playermodel);
 }
 
-void Player::Init(int player) {
-    DrawFPS(50, 50);
+// Draw player with projectile and set player position
+void Player::Init(int player)
+{
     DrawRectangleV(position, origin, BROWN);
     DisplayHealth();
 
-    // Set player position
-    if (player == 1 && !isInit) {
+    if (player == 1 && !isInit)
+    {
         position = {100, mapShape.y - origin.y};
         isInit = true;
     }
-    else if (player == 2 && !isInit) {
+    else if (player == 2 && !isInit)
+    {
         position = {1180, mapShape.y - origin.y};
         isInit = true;
     }
@@ -32,25 +38,33 @@ void Player::Init(int player) {
 }
 
 // Display player health
-void Player::DisplayHealth() {
+void Player::DisplayHealth()
+{
     DrawText("Health: ", position.x - 40, position.y - 20, 20, BLACK);
     DrawText(to_string(health).c_str(), position.x + 40, position.y - 20, 20, BLACK);
 }
 
 // Move player and return true if key is pressed for game logic
-bool Player::Move() {
-    if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D)) {
-        if (position.x + origin.x < GetScreenWidth()) {
+bool Player::Move()
+{
+    if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D))
+    {
+        if (position.x + origin.x < GetScreenWidth())
+        {
             position.x += 10;
-        } else {
+        } else
+        {
             position.x = GetScreenWidth() - origin.x;
         }
         return true;
     }
-    else if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A)) {
-        if (position.x > 0) {
+    else if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A))
+    {
+        if (position.x > 0)
+        {
             position.x -= 10;
-        } else {
+        } else
+        {
             position.x = 0;
         }
         return true;
@@ -59,7 +73,8 @@ bool Player::Move() {
 } 
 
 // Draw aiming line
-Vector2 Player::TakeAim() {
+Vector2 Player::TakeAim()
+{
     aimingPoint = GetMousePosition();
     DrawLineEx(
         {position.x + 7, position.y + 25},
@@ -79,7 +94,8 @@ Vector2 Player::TakeAim() {
     return aimingPoint;
 }
 
-// Get player rectangle
-Rectangle Player::GetRect() {
+// Get player rectangle for collision detection
+Rectangle Player::GetRect()
+{
     return {position.x, position.y, origin.x, origin.y};
 }

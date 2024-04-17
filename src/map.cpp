@@ -3,13 +3,13 @@
 
 using namespace std;
 
-Map::Map() {
-
-}
+Map::Map() {}
 
 Map::~Map() {}
 
-void Map::Init() {
+// Initialize map
+void Map::Init()
+{
     //ImageDraw(&background, 0, 0, RAYWHITE);
     DrawRectangleRec(mapShape, color);
     ClearBackground(RAYWHITE);
