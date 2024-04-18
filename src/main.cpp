@@ -1,7 +1,6 @@
 #include <iostream>
 #include <raylib.h>
 #include "game.hpp"
-#include "ui.hpp"
 
 /*/ GLOBAL DEFINITIONS /*/
 int screenWidth = 1280;
@@ -18,17 +17,17 @@ int main()
     {
         BeginDrawing();
 
+        // Handle user input
         game.HandleInput();
 
         // Game initialization
         game.Init();
 
-
+        // Update projectiles and check for collisions
         game.Update();
 
         // Begin with Player 1
         game.Rounds();
-
 
         EndDrawing();
     }
