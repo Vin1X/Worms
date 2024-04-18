@@ -11,7 +11,7 @@ void Ui::Init()
 {
     ClearBackground(RAYWHITE);
     DrawText("NOT WORMS!", screenCenter.x - MeasureText("NOT WORMS!", 40) / 2, screenCenter.y - 20, 40, DARKGRAY);
-    DrawText("PRESS [ENTER] TO START", screenCenter.x - MeasureText("PRESS [ENTER] TO START", 20) / 2, screenCenter.y + 20, 20, DARKGRAY);    
+    DrawText("PRESS [ENTER] TO START", screenCenter.x - MeasureText("PRESS [ENTER] TO START", 20) / 2, screenCenter.y + 20, 20, DARKGRAY);
 }
 
 // Draw base ui for game

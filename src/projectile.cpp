@@ -22,5 +22,6 @@ void Projectile::Update()
 void Projectile::Draw()
 {
     projectileRadius = 5;
-    if (active) DrawCircleV(position, projectileRadius, RED);
+    if (active)
+        DrawCircleV(position, projectileRadius, RED);
 }

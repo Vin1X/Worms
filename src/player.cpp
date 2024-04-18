@@ -15,7 +15,7 @@ Player::Player()
 // Unload player model
 Player::~Player()
 {
-    //UnloadTexture(playermodel);
+    // UnloadTexture(playermodel);
 }
 
 // Draw player with projectile and set player position
@@ -50,7 +50,8 @@ bool Player::Move()
         if (position.x + origin.x < GetScreenWidth())
         {
             position.x += 10;
-        } else
+        }
+        else
         {
             position.x = GetScreenWidth() - origin.x;
         }
@@ -61,14 +62,16 @@ bool Player::Move()
         if (position.x > 0)
         {
             position.x -= 10;
-        } else
+        }
+        else
         {
             position.x = 0;
         }
         return true;
     }
-    else return false;
-} 
+    else
+        return false;
+}
 
 // Draw aiming line
 Vector2 Player::TakeAim()
@@ -78,8 +81,7 @@ Vector2 Player::TakeAim()
         {position.x + 7, position.y + 25},
         aimingPoint,
         5,
-        LIGHTGRAY
-    );
+        LIGHTGRAY);
 
     // Super expert math to calculate the angle and velocity of the projectile (Ki)
     direction.x = GetMouseX() - position.x;

@@ -5,7 +5,7 @@ Explosions::Explosions() {}
 
 Explosions::~Explosions() {}
 
-// Create explosion struct and push it to the vector 
+// Create explosion struct and push it to the vector
 void Explosions::AddExplosion(Vector2 position)
 {
     Explosion newExplosion;
@@ -17,13 +17,12 @@ void Explosions::AddExplosion(Vector2 position)
 // Explosion particles
 void Explosions::Update()
 {
-
 }
 
 // Draw all explosions
 void Explosions::Draw()
 {
-    for (const auto& explosion : explosion)
+    for (const auto &explosion : explosion)
     {
         if (explosion.active)
         {

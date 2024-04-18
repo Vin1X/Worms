@@ -1,9 +1,10 @@
 #include <raylib.h>
 #include "game.hpp"
 
-Game::Game() {
+Game::Game()
+{
     /*
-    4 game states: 
+    4 game states:
     start = 0
     running = 1
     pause = 2
@@ -20,7 +21,7 @@ void Game::Init()
     {
         ui.Init();
     }
-    else if (gameState == 1) 
+    else
     {
         for (auto &player : player)
         {
@@ -34,11 +35,19 @@ void Game::Init()
 // Move projectile and draw explosions
 void Game::Update()
 {
-    for (int i = 0; i < 2; ++i)
+    if (gameState == 1)
     {
-        player[i].projectile.Update();
-        CheckCollision(i);
+        for (int i = 0; i < 2; ++i)
+        {
+            player[i].projectile.Update();
+            CheckCollision(i);
+        }
     }
+    else if (gameState == 2)
+    {
+        ui.Pause();
+    }
+
     explosions.Draw();
     if (GetFPS() < 50)
     {
@@ -58,9 +67,10 @@ void Game::CheckCollision(int i)
 
     // Map impact
     /*if (explosionCollision) {
-        
+
     }
-    else */ if (mapImpact)
+    else */
+    if (mapImpact)
     {
         player[i].projectile.active = false;
         DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
@@ -68,7 +78,7 @@ void Game::CheckCollision(int i)
         {
             explosions.AddExplosion(player[i].projectile.position);
         }
-        //if (!selfHit) player[i].projectile.Explosion();
+        // if (!selfHit) player[i].projectile.Explosion();
     }
 
     // Player impact
@@ -91,12 +101,11 @@ void Game::HandleInput()
 {
     if (gameState == 2 && IsKeyPressed(KEY_P))
     {
-        gameState  = 1;
-    } 
+        gameState = 1;
+    }
     else if (gameState == 1 && IsKeyPressed(KEY_P))
     {
         gameState = 2;
-        ui.Pause();
     }
     if (gameState == 0 && IsKeyPressed(KEY_ENTER))
     {
@@ -112,8 +121,8 @@ void Game::HandleInput()
 void Game::Rounds()
 {
     // Each Player has a turn with a set amount of moves and a shot
-    Player& currentPlayerRef = player[currentPlayer];
-    Player& nextPlayerRef = player[(currentPlayer + 1) % 2];
+    Player &currentPlayerRef = player[currentPlayer];
+    Player &nextPlayerRef = player[(currentPlayer + 1) % 2];
 
     if (gameState == 1 && !nextPlayerRef.projectile.active)
     {
@@ -124,21 +133,22 @@ void Game::Rounds()
             if (currentPlayerRef.Move())
             {
                 currentPlayerRef.moves--;
-                moves = currentPlayerRef.moves; 
+                moves = currentPlayerRef.moves;
             }
         }
         // Shoot projectile
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
             // Parse data to projectile
-            currentPlayerRef.projectile.active = true; 
-            currentPlayerRef.projectile.position = {currentPlayerRef.position.x + 10, currentPlayerRef.position.y + 25}; 
-            currentPlayerRef.projectile.velocity = currentPlayerRef.velocity; 
+            currentPlayerRef.projectile.active = true;
+            currentPlayerRef.projectile.position = {currentPlayerRef.position.x + 10, currentPlayerRef.position.y + 25};
+            currentPlayerRef.projectile.velocity = currentPlayerRef.velocity;
             currentPlayerRef.playerTurn = false;
             currentPlayer = (currentPlayer + 1) % 2;
             player[currentPlayer].moves = 5;
             player[currentPlayer].playerTurn = true;
-            if (currentPlayer == 0) round++;
+            if (currentPlayer == 0)
+                round++;
         }
     }
     ui.Rounds(round, player[currentPlayer].moves);
@@ -155,7 +165,8 @@ void Game::GameOver()
 }
 
 // Restart game and reinit variables
-void Game::Restart() {
+void Game::Restart()
+{
     for (int i = 0; i < 2; i++)
     {
         player[i].health = 100;
