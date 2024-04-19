@@ -10,7 +10,7 @@ int screenHeight = 720;
 int main()
 {
     // Initialization of game window
-    InitWindow(screenWidth, screenHeight, "Worms");
+    InitWindow(screenWidth, screenHeight, "Not Worms!");
     SetTargetFPS(60);
 
     // Initialization audio and background music
