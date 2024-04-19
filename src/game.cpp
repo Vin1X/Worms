@@ -87,7 +87,7 @@ void Game::CheckCollision(int i)
     {
         player[i].projectile.active = false;
         player[(i + 1) % 2].health -= 20;
-        if (player[i + 1].health > 0)
+        if (player[(i + 1) % 2].health > 0)
         {
             ui.SoundPlay(ui.HIT);
         }
