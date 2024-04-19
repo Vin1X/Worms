@@ -15,13 +15,6 @@ int main()
 
     // Initialization audio and background music
     InitAudioDevice();
-    Music music;
-    music = LoadMusicStream("resources/sounds/After the Storm.mp3");
-    SetMusicVolume(music, 0.1);
-    PlayMusicStream(music);
-
-    Texture2D player;
-    player = LoadTexture("resources/img/idle.png");
 
     // Initialization game and UI
     Ui ui(screenWidth, screenHeight);
@@ -29,12 +22,9 @@ int main()
 
     while (!WindowShouldClose())
     {
-        UpdateMusicStream(music);
 
         BeginDrawing();
 
-        DrawFPS(40, 40);
-        DrawTexture(player, 0, 0, WHITE);
         // Handle user input
         game.HandleInput();
 

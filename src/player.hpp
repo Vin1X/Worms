@@ -15,6 +15,7 @@ public:
     Vector2 velocity;
     Vector2 origin;
     Rectangle destRec;
+    Texture2D playermodel = LoadTexture("resources/img/idle.png");
 
     // Con-/Destructor
     Player();
@@ -35,7 +36,6 @@ private:
     Rectangle mapShape = {0, 600, 1280, 250};
 
     // Playermodel
-    Texture2D playermodel = LoadTexture("resources/img/idle.png");
     float playerScale = 1.5f;
     Rectangle sourceRec = {0.0f, 0.0f, (float)playermodel.width, (float)playermodel.height};
 

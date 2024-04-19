@@ -35,7 +35,7 @@ void Player::Init(int player)
     else if (player == 2)
     {
         position = {1180, mapShape.y - playermodel.height - 25};
-        playermodel = LoadTexture("resources/img/idle2.png");
+        playermodel = LoadTexture("resources/img/idle2.png"); // Maniuplate playermodel based on where you aim instead of this shit
     }
 
     DisplayHealth();
@@ -105,5 +105,5 @@ Vector2 Player::TakeAim()
 // Get player rectangle for collision detection
 Rectangle Player::GetRect()
 {
-    return {position.x, position.y, origin.x, origin.y};
+    return {position.x, position.y, playermodel.width * playerScale, playermodel.height * playerScale};
 }

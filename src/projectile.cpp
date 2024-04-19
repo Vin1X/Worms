@@ -25,11 +25,11 @@ void Projectile::Draw()
     Rectangle destRec = {
         position.x,
         position.y + 5,
-        projectile.width * projectileScale,
-        projectile.height * projectileScale};
+        projectileTexture.width * projectileScale,
+        projectileTexture.height * projectileScale};
 
     projectileRadius = 5;
 
     if (active)
-        DrawTexturePro(projectile, sourceRec, destRec, Vector2{0, 0}, 0, WHITE);
+        DrawTexturePro(projectileTexture, sourceRec, destRec, Vector2{0, 0}, 0, WHITE);
 }

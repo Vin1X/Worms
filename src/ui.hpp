@@ -6,12 +6,19 @@ class Ui
 {
 public:
     // Variables
-    float screenWidth = 1280;
-    float screenHeight = 720;
+    float screenWidth;
+    float screenHeight;
     enum SoundType
     {
         SHOT,
-        EXPLOSION
+        EXPLOSION,
+        DEATH,
+        HIT
+    };
+    enum MusicType
+    {
+        START,
+        GAME
     };
 
     // Con-/Destructor
@@ -19,6 +26,7 @@ public:
     ~Ui();
 
     // Functions
+    void MusicPlay(MusicType music);
     void SoundPlay(SoundType sound);
     void Init();
     void Rounds(int currentRound, int remainingMoves);
@@ -27,7 +35,10 @@ public:
 
 private:
     // Variables
-    Vector2 screenCenter = {screenWidth / 2, screenHeight / 2};
     Sound shot = LoadSound("resources/sounds/gunshot.mp3");
     Sound explosion = LoadSound("resources/sounds/explosion.mp3");
+    Sound death = LoadSound("resources/sounds/death.wav");
+    Sound hit = LoadSound("resources/sounds/hit.wav");
+    Music startMusic = LoadMusicStream("resources/sounds/After the Storm.mp3");
+    Music gameMusic = LoadMusicStream("resources/sounds/After the Storm.mp3");
 };

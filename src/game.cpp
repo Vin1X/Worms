@@ -17,9 +17,15 @@ Game::~Game() {}
 // Initialize players and map
 void Game::Init()
 {
+    ui.MusicPlay(ui.START);
+    // Only display on boot
     if (gameState == 0)
     {
         ui.Init();
+    }
+    else if (gameState == 3)
+    {
+        ui.GameOver();
     }
     else
     {
@@ -28,11 +34,12 @@ void Game::Init()
             player.Init(playerNumber);
             playerNumber++;
         }
+        map.Init();
+        ui.Rounds(round, player[currentPlayer].moves); // Update Ui after player change
     }
-    map.Init();
 }
 
-// Move projectile and draw explosions
+// Move projectile and pause game
 void Game::Update()
 {
     if (gameState == 1)
@@ -49,11 +56,12 @@ void Game::Update()
     }
 
     explosions.Draw();
+
+    // Clean up explosions if fps drop
     if (GetFPS() < 50)
     {
         explosions.CleanUp();
     }
-    GameOver();
 }
 
 // Check collision between player, map and projectile
@@ -68,7 +76,6 @@ void Game::CheckCollision(int i)
     if (mapImpact)
     {
         player[i].projectile.active = false;
-        DrawText("Impact", ui.screenWidth / 2 - MeasureText("Impact", 20) / 2, ui.screenHeight / 2, 20, RED);
         if (!selfHit)
         {
             explosions.AddExplosion(player[i].projectile.position);
@@ -80,7 +87,10 @@ void Game::CheckCollision(int i)
     {
         player[i].projectile.active = false;
         player[(i + 1) % 2].health -= 20;
-        DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
+        if (player[i + 1].health > 0)
+        {
+            ui.SoundPlay(ui.HIT);
+        }
     }
 
     // Out of map
@@ -88,6 +98,8 @@ void Game::CheckCollision(int i)
     {
         player[i].projectile.active = false;
     }
+
+    GameOver();
 }
 
 // Handle input for whole instance
@@ -114,7 +126,7 @@ void Game::HandleInput()
 // Main game loop, iterate through rounds and check for game over
 void Game::Rounds()
 {
-    // Each Player has a turn with a set amount of moves and a shot
+    // Each Player has a turn with a set amount of moves and one shot
     Player &currentPlayerRef = player[currentPlayer];
     Player &nextPlayerRef = player[(currentPlayer + 1) % 2];
 
@@ -134,11 +146,14 @@ void Game::Rounds()
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
             ui.SoundPlay(ui.SHOT);
+
             // Parse data to projectile
             currentPlayerRef.projectile.active = true;
-            currentPlayerRef.projectile.position = {currentPlayerRef.position.x + 10, currentPlayerRef.position.y + 25};
+            currentPlayerRef.projectile.position = {currentPlayerRef.position.x + 10, currentPlayerRef.position.y + 30};
             currentPlayerRef.projectile.velocity = currentPlayerRef.velocity;
             currentPlayerRef.playerTurn = false;
+
+            // Switch player
             currentPlayer = (currentPlayer + 1) % 2;
             player[currentPlayer].moves = 5;
             player[currentPlayer].playerTurn = true;
@@ -146,29 +161,32 @@ void Game::Rounds()
                 round++;
         }
     }
-    ui.Rounds(round, player[currentPlayer].moves);
 }
 
-// Return true if game is over
+// Check for game over
 void Game::GameOver()
 {
     if (player[0].health <= 0 || player[1].health <= 0)
     {
+        ui.SoundPlay(ui.DEATH);
         gameState = 3;
-        ui.GameOver();
     }
 }
 
 // Restart game and reinit variables
 void Game::Restart()
 {
+    explosions.ClearExplosions();
+    explosions.CleanUp();
     for (int i = 0; i < 2; i++)
     {
         player[i].health = 100;
+        player[i].moves = 5;
         player[i].projectile.active = false;
     }
+    player[0].position = {100, map.mapShape.y - player[0].playermodel.height - 25};
+    player[1].position = {1180, map.mapShape.y - player[1].playermodel.height - 25};
     currentPlayer = 0;
     round = 0;
     gameState = 1;
-    explosions.ClearExplosions();
 }

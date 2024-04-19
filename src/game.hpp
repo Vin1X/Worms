@@ -7,26 +7,21 @@
 class Game
 {
 public:
-    // Variables
-    int gameState = 0;
-    int moves = 5;
-    int round = 0;
-
     // Con-/Destructor
     Game(Ui &ui);
     ~Game();
 
     // Functions
-    void Restart();
     void Init();
+    void Rounds();
     void Update();
     void HandleInput();
-    void Rounds();
-    void CheckCollision(int i);
-    void GameOver();
 
 private:
     // Variables
+    int gameState = 0;
+    int moves = 5;
+    int round = 0;
     int playerNumber = 1;
     int currentPlayer = 0;
     bool playerHit;
@@ -39,4 +34,9 @@ private:
     Player player[2];
     Explosions explosions;
     Ui &ui;
+
+    // Functions
+    void CheckCollision(int i);
+    void GameOver();
+    void Restart();
 };

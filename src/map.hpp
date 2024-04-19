@@ -7,7 +7,6 @@ class Map
 public:
     // Variables
     Rectangle mapShape = {0, 600, 1280, 250};
-    Color color = BLACK;
 
     // Con-/Destructor
     Map();
@@ -17,6 +16,5 @@ public:
     void Init();
 
 private:
-    // Variables
-    Image background = LoadImage("resources/img/background.png");
+    Color color = BLACK;
 };

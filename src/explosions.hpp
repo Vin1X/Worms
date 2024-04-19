@@ -16,7 +16,6 @@ public:
 
     // Functions
     void AddExplosion(Vector2 position);
-    void Update();
     void Draw();
     void ClearExplosions();
     void CleanUp();
@@ -29,4 +28,7 @@ private:
         bool active;
     };
     vector<Explosion> explosion;
+
+    // Functions
+    void Update();
 };
