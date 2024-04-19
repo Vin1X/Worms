@@ -1,2 +1,3 @@
 extension-output-ms-vscode.exe
 *.exe
+!Not Worms.exe
