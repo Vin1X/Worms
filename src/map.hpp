@@ -18,5 +18,5 @@ public:
 
 private:
     // Variables
-    Image background = LoadImage("img/background.jpg");
+    Image background = LoadImage("resources/img/background.png");
 };

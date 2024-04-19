@@ -16,3 +16,12 @@ I used a vscode template from [Educ8s](https://github.com/educ8s/Raylib-CPP-Star
 
 #### Install the library
 I've also followed an [tutorial](https://www.youtube.com/watch?v=PaAcVk5jUd8) on how to install and use Raylib in VSCode
+
+## Used resources
+Projectiles: [Studio Petits Sauvages](https://br.pinterest.com/pin/483151866248226569/)
+
+Gunshot: [Pixabay](https://pixabay.com/sound-effects/search/explosionm/) (no specific creator)
+
+Music: The Witcher 3, After the Storm by Mikolai Stroinski
+
+Playermodel: [Action Pack- City](https://anokolisa.itch.io/action)

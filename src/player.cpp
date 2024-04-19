@@ -15,31 +15,39 @@ Player::Player()
 // Unload player model
 Player::~Player()
 {
-    // UnloadTexture(playermodel);
+    UnloadTexture(playermodel);
 }
 
 // Draw player with projectile and set player position
 void Player::Init(int player)
 {
-    DrawRectangleV(position, origin, BROWN);
-    DisplayHealth();
+    // We have to update the destination
+    Rectangle destRec = {
+        position.x,
+        position.y + 5,
+        playermodel.width * playerScale,
+        playermodel.height * playerScale};
 
     if (player == 1)
     {
-        position = {100, mapShape.y - origin.y};
+        position = {100, mapShape.y - playermodel.height - 25};
     }
     else if (player == 2)
     {
-        position = {1180, mapShape.y - origin.y};
+        position = {1180, mapShape.y - playermodel.height - 25};
+        playermodel = LoadTexture("resources/img/idle2.png");
     }
+
+    DisplayHealth();
+    DrawTexturePro(playermodel, sourceRec, destRec, Vector2{0, 0}, 0, WHITE);
     projectile.Draw();
 }
 
 // Display player health
 void Player::DisplayHealth()
 {
-    DrawText("Health: ", position.x - 40, position.y - 20, 20, BLACK);
-    DrawText(to_string(health).c_str(), position.x + 40, position.y - 20, 20, BLACK);
+    DrawText("Health: ", position.x - 35, position.y - 20, 20, BLACK);
+    DrawText(to_string(health).c_str(), position.x + 45, position.y - 20, 20, BLACK);
 }
 
 // Move player and return true if key is pressed for game logic
@@ -49,7 +57,7 @@ bool Player::Move()
     {
         if (position.x + origin.x < GetScreenWidth())
         {
-            position.x += 10;
+            position.x += moveLength;
         }
         else
         {
@@ -61,7 +69,7 @@ bool Player::Move()
     {
         if (position.x > 0)
         {
-            position.x -= 10;
+            position.x -= moveLength;
         }
         else
         {
@@ -78,7 +86,7 @@ Vector2 Player::TakeAim()
 {
     aimingPoint = GetMousePosition();
     DrawLineEx(
-        {position.x + 7, position.y + 25},
+        {position.x + 15, position.y + 25},
         aimingPoint,
         5,
         LIGHTGRAY);

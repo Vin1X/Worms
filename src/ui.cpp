@@ -2,7 +2,9 @@
 #include <iostream>
 #include <string>
 
-Ui::Ui() {}
+Ui::Ui(int screenWidth, int screenHeight) : screenWidth(screenWidth), screenHeight(screenHeight)
+{
+}
 
 Ui::~Ui() {}
 
@@ -21,6 +23,25 @@ void Ui::Rounds(int currentRound, int remainingMoves)
     std::string moves = "Moves: " + std::to_string(remainingMoves);
     DrawText(round.c_str(), screenCenter.x - MeasureText(round.c_str(), 30) / 2, 10, 30, DARKGRAY);
     DrawText(moves.c_str(), 10, 10, 20, DARKGRAY);
+}
+
+// Play sounds
+void Ui::SoundPlay(SoundType sound)
+{
+    Sound soundToBePlayed;
+    switch (sound)
+    {
+    case SHOT:
+        soundToBePlayed = shot;
+        break;
+    case EXPLOSION:
+        soundToBePlayed = explosion;
+        break;
+    default:
+        break;
+    }
+    SetSoundVolume(soundToBePlayed, 0.1);
+    PlaySound(soundToBePlayed);
 }
 
 // Draw pause screen

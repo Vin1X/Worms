@@ -21,7 +21,15 @@ void Projectile::Update()
 // Draw projectile
 void Projectile::Draw()
 {
+    // We have to update the destination
+    Rectangle destRec = {
+        position.x,
+        position.y + 5,
+        projectile.width * projectileScale,
+        projectile.height * projectileScale};
+
     projectileRadius = 5;
+
     if (active)
-        DrawCircleV(position, projectileRadius, RED);
+        DrawTexturePro(projectile, sourceRec, destRec, Vector2{0, 0}, 0, WHITE);
 }

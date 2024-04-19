@@ -1,7 +1,7 @@
 #include <raylib.h>
 #include "game.hpp"
 
-Game::Game()
+Game::Game(Ui &ui) : ui(ui)
 {
     /*
     4 game states:
@@ -62,23 +62,17 @@ void Game::CheckCollision(int i)
     bool playerHit = CheckCollisionCircleRec(player[i].projectile.position, player[i].projectile.projectileRadius, player[(i + 1) % 2].GetRect());
     bool selfHit = CheckCollisionCircleRec(player[i].projectile.position, player[i].projectile.projectileRadius + 20, player[i].GetRect());
     bool mapImpact = CheckCollisionCircleRec(player[i].projectile.position, player[i].projectile.projectileRadius, map.mapShape);
-    bool outOfMap = (player[i].projectile.position.x < 0 || player[i].projectile.position.x > GetScreenWidth() || player[i].projectile.position.y > GetScreenHeight() || player[i].projectile.position.y < 0);
-    bool explosionCollision = CheckCollisionCircles(player[i].projectile.position, player[i].projectile.projectileRadius, explosions.position, 20);
+    bool outOfMap = (player[i].projectile.position.x < 0 || player[i].projectile.position.x > ui.screenWidth || player[i].projectile.position.y > ui.screenHeight || player[i].projectile.position.y < 0);
 
     // Map impact
-    /*if (explosionCollision) {
-
-    }
-    else */
     if (mapImpact)
     {
         player[i].projectile.active = false;
-        DrawText("Impact", GetScreenWidth() / 2 - MeasureText("Impact", 20) / 2, GetScreenHeight() / 2, 20, RED);
+        DrawText("Impact", ui.screenWidth / 2 - MeasureText("Impact", 20) / 2, ui.screenHeight / 2, 20, RED);
         if (!selfHit)
         {
             explosions.AddExplosion(player[i].projectile.position);
         }
-        // if (!selfHit) player[i].projectile.Explosion();
     }
 
     // Player impact
@@ -139,6 +133,7 @@ void Game::Rounds()
         // Shoot projectile
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
+            ui.SoundPlay(ui.SHOT);
             // Parse data to projectile
             currentPlayerRef.projectile.active = true;
             currentPlayerRef.projectile.position = {currentPlayerRef.position.x + 10, currentPlayerRef.position.y + 25};

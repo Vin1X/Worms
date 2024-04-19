@@ -35,10 +35,9 @@ void Explosions::Draw()
 void Explosions::ClearExplosions()
 {
     explosion.clear();
-    explosionCount = 0;
 }
 
-// When performance is to bad, remove first explosion
+// When performance is to bad, remove first explosion of vector
 void Explosions::CleanUp()
 {
     if (!explosion.empty())

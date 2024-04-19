@@ -13,7 +13,7 @@ public:
     int round = 0;
 
     // Con-/Destructor
-    Game();
+    Game(Ui &ui);
     ~Game();
 
     // Functions
@@ -38,5 +38,5 @@ private:
     Map map;
     Player player[2];
     Explosions explosions;
-    Ui ui;
+    Ui &ui;
 };

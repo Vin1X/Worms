@@ -20,4 +20,8 @@ public:
     void Draw();
 
 private:
+    // Textures
+    Texture2D projectile = LoadTexture("resources/img/projectile.png");
+    float projectileScale = 0.1f;
+    Rectangle sourceRec = {0.0f, 0.0f, (float)projectile.width, (float)projectile.height};
 };
